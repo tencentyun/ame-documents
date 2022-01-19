@@ -74,7 +74,7 @@ mTRTCCloud.setRemoteVideoRenderListener(
 
 ##### Step 1：导入解析代码
 
-将 iOS 目录里面的 `AMEVideoFrameParser.h`、`AMEVideoFrameParser.mm` 源文件导入到工程中，修改里面的包路径。
+将 iOS 目录里面的 `AMEVideoFrameParser.h`、`AMEVideoFrameParser.mm` 源文件导入到工程中。
 
 ##### Step 2：创建视频渲染监听器
 
