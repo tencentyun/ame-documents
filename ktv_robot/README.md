@@ -17,11 +17,11 @@
 
 ##### Step 1：导入解析代码
 
-将 Android/TRTC 目录里面的 `AMEVideoFrameParser.java` 源文件导入到工程中，修改里面的包路径。
+将 Android 目录里面的 `AMEVideoFrameParser.java` 源文件导入到工程中，修改里面的包路径。
 
 ##### Step 2：创建视频渲染监听器
 
-可以参考 Android/TRTC 目录里面提供的`AMEVideoRenderExample.java` 源文件，调用解析类解析视频帧的 YUV 数据，获取里面实际传递的内容：
+可以参考 Android 目录里面提供的`AMEVideoRenderExample.java` 源文件，调用解析类解析视频帧的 YUV 数据，获取里面实际传递的内容：
 
 ```
 package com.tencent.ame;
@@ -68,8 +68,58 @@ mTRTCCloud.setRemoteVideoRenderListener(
  );
 ```
 
-
 ### IOS
 
-todo
+#### TRTC
+
+##### Step 1：导入解析代码
+
+将 iOS 目录里面的 `AMEVideoFrameParser.h`、`AMEVideoFrameParser.mm` 源文件导入到工程中，修改里面的包路径。
+
+##### Step 2：创建视频渲染监听器
+
+可以参考 iOS 目录里面提供的`AMEVideoRenderExample.m` 源文件，调用解析类解析视频帧的 YUV 数据，获取里面实际传递的内容：
+
+```
+#import "AMEVideoRenderExample.h"
+#import "AMEVideoFrameParser.h"
+
+@interface AMEVideoRenderExample () <TRTCVideoRenderDelegate>
+
+@end
+
+@implementation AMEVideoRenderExample
+
+#pragma mark - TRTCVideoRenderDelegate
+
+- (void)onRenderVideoFrame:(TRTCVideoFrame *)frame userId:(NSString *)userId
+                streamType:(TRTCVideoStreamType)streamType {
+    NSLog(@"AMEVideoRenderExample frame width: %d, height: %d", frame.width, frame.height);
+    VideoColorFrameParseResult *result = [AMEVideoFrameParser parseFromYUV:frame.data width:frame.width height:frame.height];
+    if (result.isSuccess) {
+        NSLog(@"AMEVideoRenderExample Content: %@", result.content);
+    } else {
+        NSLog(@"AMEVideoRenderExample Error: %@", result.errMsg);
+    }
+}
+
+@end
+```
+
+##### Step 3：设置视频渲染监听器
+
+在 AME 侧创建完一个机器人后会绑定一个用户 ID，所以在终端需要监听改用户的视频流渲染：
+
+```
+@property (strong, nonatomic) AMEVideoRenderExample *ameRender;
+
+
+self.ameRender = [AMEVideoRenderExample new];
+    [self.trtcCloud setRemoteVideoRenderDelegate:@"userID" delegate:(id<TRTCVideoRenderDelegate>)self.ameRender pixelFormat:TRTCVideoPixelFormat_I420 bufferType:TRTCVideoBufferType_NSData];
+```
+
+
+
+
+
 
