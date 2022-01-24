@@ -4,6 +4,8 @@
 
 ```json
 {
+	"musicId": "",			// 音乐ID
+	"duration": 12333,		// 音乐总时长，单位：毫秒
 	"musicPlayProgress": 278921,	// 音乐播放进度，单位：毫秒
 	"customMsg": {}			// 自定义消息，通过云 API 的同步操作指令接口设置
 }
